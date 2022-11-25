@@ -1,3 +1,5 @@
+import allocationPolicies.*;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,7 +11,7 @@ public class App {
 
     public static void main(String[] args)  {
         try {
-            Path path = Paths.get("C:\\Users\\Matheus_Tosin\\Desktop\\PUCRS\\SISOP\\Gerenciamento_Memoria\\src\\config.txt");
+            Path path = Paths.get("C:\\Users\\Matheus_Tosin\\Desktop\\PUCRS\\SISOP\\Memory-Manager\\src\\config.txt");
             List<String> lines = Files.readAllLines(path);
 
 

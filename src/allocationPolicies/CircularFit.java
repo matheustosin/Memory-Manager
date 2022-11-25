@@ -1,3 +1,5 @@
+package allocationPolicies;
+
 public class CircularFit implements AllocationPolicy {
 
     @Override

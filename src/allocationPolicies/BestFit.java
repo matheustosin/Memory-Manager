@@ -1,3 +1,5 @@
+package allocationPolicies;
+
 public class BestFit implements AllocationPolicy {
 
 	@Override
