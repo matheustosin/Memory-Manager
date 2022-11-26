@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,14 +10,15 @@ public class App {
 
     public static void main(String[] args)  {
         try {
-            Path path = Paths.get("C:\\Users\\Matheus_Tosin\\Desktop\\PUCRS\\SISOP\\Gerenciamento_Memoria\\src\\config.txt");
+            Path path = Paths.get("C:\\Users\\Matheus_Tosin\\Desktop\\PUCRS\\SISOP\\Memory-Manager\\src\\config.txt");
             List<String> lines = Files.readAllLines(path);
 
 
             while (true) {
-                MenuUtils.showInitialMenuMemorySize();
+                MenuUtils.showInitialMenu();
                 Integer option = MenuUtils.nextInt();
                 if (option == 2) break;
+                if (option != 1) continue;
                 
                 MenuUtils.showInitialMenuMemorySize();
                 Integer memorySize = MenuUtils.nextInt();
@@ -26,6 +28,7 @@ public class App {
                 
                 AllocationPolicy allocationPolicy = getPolicy(allocationOption);
                 MemoryVariablePartition memory = new MemoryVariablePartition(memorySize, allocationPolicy);
+
 
                 lines.forEach(line -> {
                     if (line.toUpperCase().startsWith("IN")) {
@@ -38,6 +41,8 @@ public class App {
                         String processID = instruction[0];
                         memory.out(processID);
                     }
+
+                    MenuUtils.nextLine();
                 });
             }
 

@@ -1,8 +1,13 @@
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class MenuUtils {
+    private static final Logger LOG = Logger.getLogger(MenuUtils.class.getName());
+    private static Scanner scanner = new Scanner(System.in);
 
-    static Scanner scanner = new Scanner(System.in);
+    private static void clear() {
+        scanner = new Scanner(System.in);
+    }
 
     public static void showInitialMenu() {
         System.out.println("1 - Iniciar");
@@ -23,7 +28,12 @@ public class MenuUtils {
     }
 
     public static int nextInt() {
+        clear();
         return scanner.nextInt();
     }
 
+    public static String nextLine() {
+        clear();
+        return scanner.nextLine();
+    }
 }

@@ -1,57 +1,63 @@
-import static java.util.Objects.isNull;
-
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.List;
+
+import static java.util.Objects.nonNull;
 
 public class MemoryVariablePartition {
     private static final Logger LOG = Logger.getLogger(MemoryVariablePartition.class.getName());
 
-    private Integer size;
     private List<String> memory;
     private AllocationPolicy allocationPolicy;
 
     public MemoryVariablePartition(Integer size, AllocationPolicy allocationPolicy) {
-        this.size = size;
-        this.memory = new ArrayList<>(size);
+        this.memory = new ArrayList<String>(Arrays.asList((String[]) Array.newInstance(String.class, size)));
         this.allocationPolicy = allocationPolicy;
     }
 
     public void in(String processID, Integer processSize) {
-        int freeSpaces = 0;
-        int initialPosition = 0;
-        BestOption bestOption = new BestOption();
+        LOG.info(String.format("(IN) => ## processID = %s | processSize = %d ##", processID, processSize));
 
-        for (int i = 0; i < this.size; i++) {
-            if (isNull(this.memory.get(i)) && i < this.size - 1) {
-                if (freeSpaces == 0) {
-                    initialPosition = i;
-                }
-                freeSpaces++;
-            } else {
-                if (isNull(this.memory.get(i))) {
-                    freeSpaces++;
-                }
-
-                bestOption = this.allocationPolicy.run(initialPosition, freeSpaces, processSize, bestOption);
-
-                initialPosition = 0;
-                freeSpaces = 0;
-            }
-        }
-
-        if (bestOption.getFreeSpaces() != 0) {
+        BestOption bestOption = this.allocationPolicy.run(memory, processSize);
+        if (nonNull(bestOption) && bestOption.getFreeSpaces() != 0) {
             for (int i = bestOption.getInitialPosition(); i < (bestOption.getInitialPosition() + processSize); i++) {
                 this.memory.set(i, processID);
             }
         } else {
             LOG.info("Espaco insuficiente de memoria");
         }
+
+        printMemory();
     }
 
     public void out(String processID) {
-        memory.stream()
-                .filter(space -> space.equalsIgnoreCase(processID))
-                .map(space -> space = null);
+        LOG.info(String.format("(OUT) => ## processID = %s ##", processID));
+
+        for (int i = 0; i < this.memory.size(); i++) {
+            if (processID.equalsIgnoreCase(this.memory.get(i))) {
+                this.memory.set(i, null);
+            }
+        }
+
+        // this.memory.forEach(space -> {
+        //     if (processID.equalsIgnoreCase(space)) {
+        //         space = null;
+        //     }
+        // });
+    
+        // this.memory.stream()
+        //     .filter(space -> processID.equalsIgnoreCase(space))
+        //     .forEach(space -> space = null);
+            
+        printMemory();    
+    }
+
+
+    private void printMemory() {
+        this.memory.forEach(m -> System.out.print(String.format(" [ %s ] ", nonNull(m) ? m : "-")));
+        System.out.println();
     }
 }

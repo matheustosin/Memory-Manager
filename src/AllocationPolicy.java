@@ -1,3 +1,5 @@
+import java.util.List;
+
 public interface AllocationPolicy {
-    BestOption run(Integer initialPosition, Integer freeSpaces, Integer processSize, BestOption bestOption);
+    BestOption run(List<String> memory, Integer processSize);
 }
