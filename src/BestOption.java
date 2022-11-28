@@ -1,5 +1,3 @@
-package allocationPolicies;
-
 public class BestOption {
     private Integer initialPosition;
     private Integer freeSpaces;
