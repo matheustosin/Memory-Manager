@@ -1,15 +1,15 @@
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Logger;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class App {
     private static final Logger LOG = Logger.getLogger(App.class.getName());
 
     public static void main(String[] args)  {
         try {
-            Path path = Paths.get("C:\\Users\\Matheus_Tosin\\Desktop\\PUCRS\\SISOP\\Memory-Manager\\src\\config.txt");
+            Path path = Paths.get("src\\config.txt");
             List<String> lines = Files.readAllLines(path);
 
 
